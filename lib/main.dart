@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:box/views/home.dart';
 
 void main() {
-  // PUT CONTENT(CONFIG) HERE TO WORK IN ALL PAGES IN MAIN.DART
   runApp(Box());
 }
 
@@ -12,7 +11,7 @@ class Box extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Box Onboarding Main",
+      title: "Box Onboarding",
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: "Montserrat",
