@@ -12,7 +12,7 @@ class Box extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Box Onboarding Main",
+      //title: "Box Onboarding Main",
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: "Montserrat",
