@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -21,8 +23,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String titleBarContent = "Teste";
+  String titleBarContent = 'Teste';
   bool showUserDetails = false;
+  bool android;
+
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        print(_image);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +50,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      android =
+          Theme.of(context).platform == TargetPlatform.android ? false : true;
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text(titleBarContent),
@@ -38,16 +62,48 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              arrowColor: Colors.white,
-              accountName: Text('Name'),
-              accountEmail: Text('pessoa@abdc.com'),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                backgroundImage: NetworkImage(
-                    'https://cdn.pixabay.com/photo/2014/04/03/10/32/businessman-310819_960_720.png'),
+              arrowColor:
+                  android ? Theme.of(context).primaryColor : Colors.white,
+              accountName: Text(
+                'CARLOS HENRIQUE | VENDEDOR',
+                style: TextStyle(
+                  color: android
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.white,
+                ),
               ),
-              //decoration: BoxDecoration(color: Colors.red),
-              otherAccountsPictures: [
+              accountEmail: Text(
+                'DISTRIBUIDORA DE BEBIDAS ASA BRANCA',
+                style: TextStyle(
+                  color: android
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.white,
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: android
+                    ? Colors.white
+                    : Theme.of(context).colorScheme.primary,
+              ),
+              currentAccountPicture: GestureDetector(
+                child: CircleAvatar(
+                  backgroundColor:
+                      android ? Theme.of(context).primaryColor : Colors.white,
+                  child: Text(
+                    "C",
+                    style: TextStyle(
+                      fontSize: 40.0,
+                      color: android
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+                onLongPress: () {
+                  getImage();
+                },
+              ), //decoration: BoxDecoration(color: Colors.red),
+              /*otherAccountsPictures: [
                 CircleAvatar(
                   backgroundColor: Colors.transparent,
                   backgroundImage: NetworkImage(
@@ -58,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                   backgroundImage: NetworkImage(
                       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
                 ),
-              ],
+              ],*/
               onDetailsPressed: () {
                 setState(() {
                   showUserDetails = !showUserDetails;
@@ -126,19 +182,21 @@ Widget _menuList(context) {
       children: <Widget>[
         ListTile(
           leading: Icon(Icons.autorenew),
+          dense: true,
           title: Text(
             'Sincronização',
             style: TextStyle(fontSize: 16.0),
           ),
           onTap: () {
-            context.setState(
-              () {},
-            );
+            Navigator.pop(context);
           },
         ),
-        Divider(),
+        Divider(
+          thickness: 1,
+        ),
         ListTile(
           leading: Icon(Icons.person),
+          dense: true,
           trailing: Badge(
             badgeContent: Text(
               '99+',
@@ -157,13 +215,12 @@ Widget _menuList(context) {
             style: TextStyle(fontSize: 16.0),
           ),
           onTap: () {
-            context.setState(
-              () {},
-            );
+            Navigator.pop(context);
           },
         ),
         ListTile(
           leading: Icon(Icons.auto_stories),
+          dense: true,
           trailing: Badge(
             badgeContent: Text(
               '0',
@@ -180,13 +237,12 @@ Widget _menuList(context) {
             style: TextStyle(fontSize: 16.0),
           ),
           onTap: () {
-            context.setState(
-              () {},
-            );
+            Navigator.pop(context);
           },
         ),
         ListTile(
           leading: Icon(Icons.shopping_cart_outlined),
+          dense: true,
           trailing: Badge(
             badgeContent: Text(
               '0',
@@ -203,13 +259,12 @@ Widget _menuList(context) {
             style: TextStyle(fontSize: 16.0),
           ),
           onTap: () {
-            context.setState(
-              () {},
-            );
+            Navigator.pop(context);
           },
         ),
         ListTile(
           leading: Icon(Icons.attach_money_outlined),
+          dense: true,
           trailing: Badge(
             badgeContent: Text(
               '0',
@@ -226,24 +281,23 @@ Widget _menuList(context) {
             style: TextStyle(fontSize: 16.0),
           ),
           onTap: () {
-            context.setState(
-              () {},
-            );
+            Navigator.pop(context);
           },
         ),
         ListTile(
           leading: Icon(Icons.place_outlined),
+          dense: true,
           title: Text(
             'Rota',
             style: TextStyle(fontSize: 16.0),
           ),
           onTap: () {
-            context.setState(
-              () {},
-            );
+            Navigator.pop(context);
           },
         ),
-        Divider(),
+        Divider(
+          thickness: 1,
+        ),
         Theme(
           data: ThemeData().copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
@@ -261,8 +315,11 @@ Widget _menuList(context) {
                     size: 22.0,
                   ),
                 ),
+                dense: true,
                 title: Text('A'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
               ListTile(
                 leading: Padding(
@@ -272,23 +329,27 @@ Widget _menuList(context) {
                     size: 22.0,
                   ),
                 ),
+                dense: true,
                 title: Text('B'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
             ],
           ),
         ),
-        Divider(),
+        Divider(
+          thickness: 1,
+        ),
         ListTile(
-          leading: Icon(Icons.power_settings_new_outlined),
+          leading: Icon(Icons.power_settings_new_outlined, color: Colors.red),
+          dense: true,
           title: Text(
             'Sair',
             style: TextStyle(fontSize: 16.0),
           ),
           onTap: () {
-            context.setState(
-              () {},
-            );
+            Navigator.pop(context);
           },
         ),
       ],
