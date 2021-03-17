@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -18,12 +19,13 @@ class Home extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
+  final String title = 'Home';
+
   @override
   _HomePageState createState() => new _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  String titleBarContent = 'Teste';
   bool showUserDetails = false;
   bool android;
 
@@ -56,7 +58,7 @@ class _HomePageState extends State<HomePage> {
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text(titleBarContent),
+        title: Text(widget.title),
       ),
       drawer: Drawer(
         child: Column(
@@ -181,7 +183,7 @@ Widget _menuList(context) {
     child: Column(
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.autorenew),
+          leading: Icon(LineAwesomeIcons.sync_icon),
           dense: true,
           title: Text(
             'Sincronização',
@@ -195,7 +197,7 @@ Widget _menuList(context) {
           thickness: 1,
         ),
         ListTile(
-          leading: Icon(Icons.person),
+          leading: Icon(LineAwesomeIcons.user),
           dense: true,
           trailing: Badge(
             badgeContent: Text(
@@ -219,7 +221,7 @@ Widget _menuList(context) {
           },
         ),
         ListTile(
-          leading: Icon(Icons.auto_stories),
+          leading: Icon(LineAwesomeIcons.box),
           dense: true,
           trailing: Badge(
             badgeContent: Text(
@@ -241,7 +243,7 @@ Widget _menuList(context) {
           },
         ),
         ListTile(
-          leading: Icon(Icons.shopping_cart_outlined),
+          leading: Icon(LineAwesomeIcons.shopping_bag),
           dense: true,
           trailing: Badge(
             badgeContent: Text(
@@ -263,7 +265,7 @@ Widget _menuList(context) {
           },
         ),
         ListTile(
-          leading: Icon(Icons.attach_money_outlined),
+          leading: Icon(LineAwesomeIcons.coins),
           dense: true,
           trailing: Badge(
             badgeContent: Text(
@@ -285,7 +287,7 @@ Widget _menuList(context) {
           },
         ),
         ListTile(
-          leading: Icon(Icons.place_outlined),
+          leading: Icon(LineAwesomeIcons.alternate_map_marked),
           dense: true,
           title: Text(
             'Rota',
@@ -301,7 +303,7 @@ Widget _menuList(context) {
         Theme(
           data: ThemeData().copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
-            leading: Icon(Icons.bar_chart),
+            leading: Icon(LineAwesomeIcons.pie_chart),
             title: Text(
               "Relatórios",
               style: TextStyle(fontSize: 16.0),
@@ -342,7 +344,7 @@ Widget _menuList(context) {
           thickness: 1,
         ),
         ListTile(
-          leading: Icon(Icons.power_settings_new_outlined, color: Colors.red),
+          leading: Icon(LineAwesomeIcons.power_off, color: Colors.red),
           dense: true,
           title: Text(
             'Sair',

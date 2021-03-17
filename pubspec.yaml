@@ -39,6 +39,8 @@ dependencies:
   #pdf: ^3.0.1
   badges: ^1.2.0
   image_picker: ^0.7.2+1
+  animated_text_kit: ^4.0.0
+  line_awesome_flutter: ^1.0.1
 
 dev_dependencies:
   flutter_test:
