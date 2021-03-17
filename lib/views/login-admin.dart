@@ -10,20 +10,20 @@ class LoginAdmin extends StatefulWidget {
   _LoginAdmin createState() => _LoginAdmin();
 }
 
-class city {
+class City {
   final String id;
   final String name;
 
-  const city({this.id, this.name});
+  const City({this.id, this.name});
 }
 
 class _LoginAdmin extends State<LoginAdmin> {
   bool _rememberMe = true;
 
-  List<city> cities = [
-    new city(id: "001", name: "CARLOS HENRIQUE"),
-    new city(id: "002", name: "ANTONIO ALYSSON"),
-    new city(id: "003", name: "CRISTIANO FERREIRA"),
+  List<City> cities = [
+    new City(id: "001", name: "CARLOS HENRIQUE"),
+    new City(id: "002", name: "ANTONIO ALYSSON"),
+    new City(id: "003", name: "CRISTIANO FERREIRA"),
   ];
 
   int index = 0;
@@ -215,7 +215,7 @@ class _LoginAdmin extends State<LoginAdmin> {
               value: cities[index],
               //hint: new Text("Ville"),
               items: cities.map(
-                (city value) {
+                (City value) {
                   return new DropdownMenuItem(
                     value: value,
                     child: new Row(
@@ -226,7 +226,7 @@ class _LoginAdmin extends State<LoginAdmin> {
                   );
                 },
               ).toList(),
-              onChanged: (city value) {
+              onChanged: (City value) {
                 setState(
                   () {
                     index = cities.indexOf(value);
