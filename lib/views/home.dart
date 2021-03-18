@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:box/models/site.dart';
+import 'package:box/views/clientes.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +22,7 @@ class Home extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   final String title = 'Home';
-
+  final Site s = Site();
   @override
   _HomePageState createState() => new _HomePageState();
 }
@@ -28,7 +30,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool showUserDetails = false;
   bool android;
-
   File _image;
   final picker = ImagePicker();
 
@@ -36,6 +37,8 @@ class _HomePageState extends State<HomePage> {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
+      widget.s.setSite = 1;
+      print('Teste ${widget.s.getSite}');
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         print(_image);
@@ -43,6 +46,10 @@ class _HomePageState extends State<HomePage> {
         print('No image selected.');
       }
     });
+  }
+
+  teste() {
+    setState(() {});
   }
 
   @override
@@ -127,6 +134,32 @@ class _HomePageState extends State<HomePage> {
               flex: 1,
               child: showUserDetails ? _buildUserDetail() : _buildDrawerList(),
             ),
+            Divider(
+              height: 1,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(-10, 6)),
+                ],
+              ),
+              child: ListTile(
+                leading: Icon(LineAwesomeIcons.power_off, color: Colors.red),
+                dense: true,
+                title: Text(
+                  'Sair',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -140,12 +173,186 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget _buildDrawerList() {
+  ScrollController _control = ScrollController();
   return ListView.builder(
+    controller: _control,
+    physics: ClampingScrollPhysics(),
     itemCount: 1,
     padding: EdgeInsets.only(top: 0.0),
     itemBuilder: (context, position) {
-      //return _menuList(context)[position];
-      return _menuList(context);
+      return Container(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              leading: Icon(LineAwesomeIcons.sync_icon),
+              dense: true,
+              title: Text(
+                'Sincronização',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            Divider(
+              thickness: 1,
+            ),
+            ListTile(
+              leading: Icon(LineAwesomeIcons.user),
+              dense: true,
+              trailing: Badge(
+                badgeContent: Text(
+                  '99+',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                badgeColor: Theme.of(context).colorScheme.primary,
+                elevation: 0,
+                animationType: BadgeAnimationType.fade,
+                shape: BadgeShape.square,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              title: Text(
+                'Clientes',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (ctx) => Clientes()));
+                //Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(LineAwesomeIcons.box),
+              dense: true,
+              trailing: Badge(
+                badgeContent: Text(
+                  '0',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                badgeColor: Theme.of(context).colorScheme.primary,
+                elevation: 0,
+                animationType: BadgeAnimationType.fade,
+              ),
+              title: Text(
+                'Produtos',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(LineAwesomeIcons.shopping_bag),
+              dense: true,
+              trailing: Badge(
+                badgeContent: Text(
+                  '0',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                badgeColor: Theme.of(context).colorScheme.primary,
+                elevation: 0,
+                animationType: BadgeAnimationType.fade,
+              ),
+              title: Text(
+                'Pedidos',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(LineAwesomeIcons.coins),
+              dense: true,
+              trailing: Badge(
+                badgeContent: Text(
+                  '0',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                badgeColor: Theme.of(context).colorScheme.primary,
+                elevation: 0,
+                animationType: BadgeAnimationType.fade,
+              ),
+              title: Text(
+                'Títulos',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(LineAwesomeIcons.alternate_map_marked),
+              dense: true,
+              title: Text(
+                'Rota',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            Divider(
+              thickness: 1,
+            ),
+            Theme(
+              data: ThemeData().copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                onExpansionChanged: (value) => {
+                  _control.animateTo(
+                    0,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeOut,
+                  ),
+                },
+                leading: Icon(LineAwesomeIcons.pie_chart),
+                title: Text(
+                  "Relatórios",
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                children: <Widget>[
+                  ListTile(
+                    leading: Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Icon(
+                        Icons.bar_chart,
+                        size: 22.0,
+                      ),
+                    ),
+                    dense: true,
+                    title: Text('A'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Icon(
+                        Icons.bar_chart,
+                        size: 22.0,
+                      ),
+                    ),
+                    dense: true,
+                    title: Text('B'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
     },
   );
 }
@@ -172,187 +379,6 @@ Widget _buildUserDetail() {
                 'https://cdn.pixabay.com/photo/2014/04/03/10/32/user-310807_960_720.png'),
           ),
           onTap: () {},
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _menuList(context) {
-  return Container(
-    child: Column(
-      children: <Widget>[
-        ListTile(
-          leading: Icon(LineAwesomeIcons.sync_icon),
-          dense: true,
-          title: Text(
-            'Sincronização',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        Divider(
-          thickness: 1,
-        ),
-        ListTile(
-          leading: Icon(LineAwesomeIcons.user),
-          dense: true,
-          trailing: Badge(
-            badgeContent: Text(
-              '99+',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            badgeColor: Theme.of(context).colorScheme.primary,
-            elevation: 0,
-            animationType: BadgeAnimationType.fade,
-            shape: BadgeShape.square,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          title: Text(
-            'Clientes',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: Icon(LineAwesomeIcons.box),
-          dense: true,
-          trailing: Badge(
-            badgeContent: Text(
-              '0',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            badgeColor: Theme.of(context).colorScheme.primary,
-            elevation: 0,
-            animationType: BadgeAnimationType.fade,
-          ),
-          title: Text(
-            'Produtos',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: Icon(LineAwesomeIcons.shopping_bag),
-          dense: true,
-          trailing: Badge(
-            badgeContent: Text(
-              '0',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            badgeColor: Theme.of(context).colorScheme.primary,
-            elevation: 0,
-            animationType: BadgeAnimationType.fade,
-          ),
-          title: Text(
-            'Pedidos',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: Icon(LineAwesomeIcons.coins),
-          dense: true,
-          trailing: Badge(
-            badgeContent: Text(
-              '0',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            badgeColor: Theme.of(context).colorScheme.primary,
-            elevation: 0,
-            animationType: BadgeAnimationType.fade,
-          ),
-          title: Text(
-            'Títulos',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: Icon(LineAwesomeIcons.alternate_map_marked),
-          dense: true,
-          title: Text(
-            'Rota',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        Divider(
-          thickness: 1,
-        ),
-        Theme(
-          data: ThemeData().copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            leading: Icon(LineAwesomeIcons.pie_chart),
-            title: Text(
-              "Relatórios",
-              style: TextStyle(fontSize: 16.0),
-            ),
-            children: <Widget>[
-              ListTile(
-                leading: Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Icon(
-                    Icons.bar_chart,
-                    size: 22.0,
-                  ),
-                ),
-                dense: true,
-                title: Text('A'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Icon(
-                    Icons.bar_chart,
-                    size: 22.0,
-                  ),
-                ),
-                dense: true,
-                title: Text('B'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          thickness: 1,
-        ),
-        ListTile(
-          leading: Icon(LineAwesomeIcons.power_off, color: Colors.red),
-          dense: true,
-          title: Text(
-            'Sair',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
         ),
       ],
     ),

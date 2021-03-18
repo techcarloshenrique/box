@@ -2,11 +2,18 @@ class Site {
   int site;
   String licenca;
 
-  Site(this.site, this.licenca);
+  Site();
 
-  Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{'site': site, 'licenca': licenca};
-    return map;
+  int get getSite {
+    return this.site;
+  }
+
+  set setSite(int value) {
+    site = value;
+  }
+
+  Map<String, dynamic> get map {
+    return {'site': site, 'licenca': licenca};
   }
 
   Site.fromMap(Map<String, dynamic> map) {
