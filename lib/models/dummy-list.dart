@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class DummyList {
   String id;
   String nome;

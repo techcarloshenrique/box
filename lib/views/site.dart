@@ -5,7 +5,6 @@ import 'package:box/utilities/ftp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:box/utilities/styles.dart';
-import 'package:box/views/login.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
