@@ -1,17 +1,19 @@
-import 'package:box/models/lista-teste.dart';
+import 'package:box/models/dummy-list.dart';
 import 'package:flutter/material.dart';
 
 class ListaTile extends StatelessWidget {
-  final ListaTeste lista;
-  const ListaTile(this.lista);
+  final DummyList lista;
+
+  ListaTile(this.lista);
+
   @override
   Widget build(BuildContext context) {
-    final avatar = lista.avatarUrl == null || lista.avatarUrl.isEmpty
+    final avatar = lista.avatar == null || lista.avatar.isEmpty
         ? CircleAvatar(
             backgroundColor: Colors.transparent,
             backgroundImage: NetworkImage(
                 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png'))
-        : CircleAvatar(backgroundImage: NetworkImage(lista.avatarUrl));
+        : CircleAvatar(backgroundImage: NetworkImage(lista.avatar));
     return InkWell(
       child: ListTile(
         leading: avatar,

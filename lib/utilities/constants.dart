@@ -64,4 +64,6 @@ class Constants {
   static final String tbUltimasCompras = "ultimas_compras";
   static final String tbUltimaComprasItens = "ultimas_compras_itens";
   static final String tbBancos = "bancos";
+
+  static String lastError;
 }

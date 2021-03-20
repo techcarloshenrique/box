@@ -1,11 +1,13 @@
 import 'dart:ui';
 
+import 'package:box/utilities/constants.dart';
+import 'package:box/utilities/ftp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:box/utilities/styles.dart';
 import 'package:box/views/login.dart';
 import 'package:permission_handler/permission_handler.dart';
-//import 'package:flutter/services.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class Site extends StatefulWidget {
   @override
@@ -13,21 +15,33 @@ class Site extends StatefulWidget {
 }
 
 class _Site extends State<Site> {
+  Ftp ftp;
+  ProgressDialog pr;
   @override
   void initState() {
     super.initState();
-    requestPermission();
+    _requestPermissions();
   }
 
   @override
   void setState(fn) {
     super.setState(fn);
-    requestPermission();
+  }
+
+  _requestPermissions() async {
+    await [
+      Permission.location,
+      Permission.storage,
+      Permission.contacts,
+      Permission.phone
+    ].request();
   }
 
   @override
   Widget build(BuildContext context) {
-    requestPermission();
+    pr = ProgressDialog(context);
+    ftp = Ftp();
+    //ftp = Ftp();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF73AEF5),
@@ -150,13 +164,14 @@ class _Site extends State<Site> {
       width: double.infinity,
       child: ElevatedButton(
         style: elevatedButtonStyle,
-        onPressed: () => {
+        onPressed: () async => {
+          tryConnect(pr, context),
           //ScaffoldMessenger.of(context).showSnackBar(snackBar),
 
-          Navigator.push(
+          /*Navigator.push(
             context,
             MaterialPageRoute(builder: (ctx) => Login()),
-          ),
+          ),*/
         },
         child: Text(
           'VALIDAR',
@@ -171,6 +186,82 @@ class _Site extends State<Site> {
       ),
     );
   }
+}
+
+Future tryConnect(ProgressDialog pr, context) async {
+  pr = ProgressDialog(
+    context,
+    type: ProgressDialogType.Normal,
+    isDismissible: true,
+    showLogs: true,
+  );
+  pr.style(
+    message: 'Conectando...',
+    borderRadius: 6.0,
+    backgroundColor: Colors.white,
+    progressWidget: Center(
+      child: CircularProgressIndicator(strokeWidth: 2),
+    ),
+    progress: 0.0,
+    maxProgress: 100.0,
+    progressTextStyle: TextStyle(
+      color: Theme.of(context).primaryColor,
+      fontSize: 13.0,
+      fontWeight: FontWeight.w400,
+    ),
+    messageTextStyle: TextStyle(
+      color: Colors.black54,
+      fontSize: 16.0,
+      fontWeight: FontWeight.w600,
+    ),
+  );
+
+  pr.show();
+
+  Ftp2 f2 = Ftp2();
+
+  if (!await f2.checkFtp()) {
+    await pr.hide();
+    _showDialog('Erro', Constants.lastError, context);
+  } else {
+    tryDownload(pr, context);
+  }
+}
+
+Future tryDownload(ProgressDialog pr, context) async {
+  pr.update(message: "Fazendo download...");
+
+  Ftp2 f2 = Ftp2();
+
+  if (!await f2.downloadFile('Sites/002.txt', '001.txt')) {
+    pr.hide();
+    _showDialog('Erro', Constants.lastError, context);
+  } else {
+    pr.hide();
+    print("download ok");
+  }
+}
+
+void _showDialog(String title, String msg, context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // retorna um objeto do tipo Dialog
+      return AlertDialog(
+        title: Text(title),
+        content: Text(msg),
+        actions: <Widget>[
+          // define os botões na base do dialogo
+          TextButton(
+            child: Text("FECHAR"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
 final snackBar = SnackBar(
@@ -190,11 +281,3 @@ final snackBar = SnackBar(
     onPressed: () {},
   ),
 );
-
-void requestPermission() async {
-// You can can also directly ask the permission about its status.
-  if (await Permission.location.isRestricted) {
-    // The OS restricts access, for example because of parental controls.
-    Permission.camera.request();
-  }
-}

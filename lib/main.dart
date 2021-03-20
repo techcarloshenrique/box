@@ -1,6 +1,7 @@
 //import 'package:box/views/onboarding.dart';
+import 'package:box/views/onboarding.dart';
 import 'package:flutter/material.dart';
-import 'package:box/views/home.dart';
+//import 'package:box/views/home.dart';
 
 void main() {
   runApp(Box());
@@ -16,7 +17,7 @@ class Box extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "Montserrat",
       ),
-      home: Home(),
+      home: Onboarding(),
     );
   }
 }

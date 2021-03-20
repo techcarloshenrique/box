@@ -42,68 +42,67 @@ class _Onboarding extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: PageView.builder(
-            controller: pageController,
-            itemCount: slides.length,
-            onPageChanged: (val) {
-              setState(() {
-                currentIndex = val;
-                iniciarHeight = 70;
-                print(this.context);
-              });
-            },
-            itemBuilder: (context, index) {
-              return SliderContent(
-                imgAssetPath: slides[index].getImgPath(),
-                title: slides[index].getTitle(),
-                desc: slides[index].getDesc(),
-              );
-            }),
-        bottomSheet: currentIndex != slides.length - 1
-            ? Container(
-                height: Platform.isIOS ? 70 : 60,
-                color: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    GestureDetector(
-                        onTap: () {
-                          pageController.animateToPage(slides.length - 1,
-                              duration: Duration(milliseconds: 400),
-                              curve: Curves.linear);
-                        },
-                        child: Text("PULAR")),
-                    Row(
-                      children: <Widget>[
-                        for (int i = 0; i < slides.length; i++)
-                          currentIndex == i
-                              ? pageIndexIndicator(true)
-                              : pageIndexIndicator(false)
-                      ],
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          pageController.animateToPage(currentIndex + 1,
-                              duration: Duration(milliseconds: 400),
-                              curve: Curves.linear);
-                        },
-                        child: Text("PRÓXIMO")),
-                  ],
-                ),
-              )
-            : GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (ctx) => Splash()),
-                  );
-                },
-                child: Container(
-                  child: iniciar(context),
-                ),
-              ));
+      backgroundColor: Colors.white,
+      body: PageView.builder(
+          controller: pageController,
+          itemCount: slides.length,
+          onPageChanged: (val) {
+            setState(() {
+              currentIndex = val;
+              iniciarHeight = 70;
+              print(this.context);
+            });
+          },
+          itemBuilder: (context, index) {
+            return SliderContent(
+              imgAssetPath: slides[index].getImgPath(),
+              title: slides[index].getTitle(),
+              desc: slides[index].getDesc(),
+            );
+          }),
+      bottomSheet: currentIndex != slides.length - 1
+          ? Container(
+              height: Platform.isIOS ? 70 : 60,
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  GestureDetector(
+                      onTap: () {
+                        pageController.animateToPage(slides.length - 1,
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.linear);
+                      },
+                      child: Text("PULAR")),
+                  Row(
+                    children: <Widget>[
+                      for (int i = 0; i < slides.length; i++)
+                        currentIndex == i
+                            ? pageIndexIndicator(true)
+                            : pageIndexIndicator(false)
+                    ],
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        pageController.animateToPage(currentIndex + 1,
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.linear);
+                      },
+                      child: Text("PRÓXIMO")),
+                ],
+              ),
+            )
+          : GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (ctx) => Splash()),
+                );
+              },
+              child: iniciar(context),
+            ),
+    );
   }
 }
 
@@ -112,11 +111,22 @@ Widget iniciar(ctx) {
     alignment: Alignment.center,
     width: MediaQuery.of(ctx).size.width,
     height: Platform.isIOS ? 70 : 60,
-    color: Colors.blue,
+    //color: Colors.blue,
     padding: EdgeInsets.symmetric(horizontal: 20),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+      color: Colors.blue,
+    ),
     child: Text(
       "INICIAR",
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: 20,
+      ),
     ),
   );
 }

@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:box/models/site.dart';
+import 'package:box/utilities/utils.dart';
 import 'package:box/views/clientes.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -22,6 +24,7 @@ class Home extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   final String title = 'Home';
+
   final Site s = Site();
   @override
   _HomePageState createState() => new _HomePageState();
@@ -54,7 +57,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    print('A');
     super.initState();
+  }
+
+  void _teste() {
+    new Directory('Box').create()
+        // The created directory is returned as a Future.
+        .then((Directory directory) {
+      print(directory.path);
+    });
+  }
+
+  _callFolderCreationMethod() async {
+    AppUtil app = AppUtil();
+    String folderInAppDocDir = await app.createFolderInAppDocDir('Box');
+    print(folderInAppDocDir);
   }
 
   @override
@@ -63,6 +81,8 @@ class _HomePageState extends State<HomePage> {
       android =
           Theme.of(context).platform == TargetPlatform.android ? false : true;
     });
+
+    _teste();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

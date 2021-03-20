@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:box/views/site.dart';
 import 'package:box/helpers/db_helper.dart';
@@ -34,7 +35,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     db.initializeDatabase();
-    print("entrou no splash");
   }
 
   @override
@@ -73,18 +73,30 @@ Widget _splashScreen() {
           ),
         ),
       ),
-      Center(
-        child: Container(
-          height: 70,
-          width: 70,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.contain,
-              image: AssetImage("assets/logos/logo.png"),
+      Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Shimmer.fromColors(
+                baseColor: Colors.white70,
+                direction: ShimmerDirection.ltr,
+                highlightColor: Colors.white30,
+                child: Container(
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: AssetImage("assets/logos/logo.png"),
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-      ),
+      )
     ],
   );
 }
